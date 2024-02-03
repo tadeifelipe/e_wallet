@@ -2,7 +2,7 @@ defmodule EWalletService.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  @required_fields [:name, :email, :password, :password_hash]
+  @required_fields [:name, :email, :password]
 
   schema "users" do
     field :name, :string
