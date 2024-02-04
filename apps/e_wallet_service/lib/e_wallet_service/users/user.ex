@@ -20,6 +20,7 @@ defmodule EWalletService.Users.User do
     |> validate_length(:password, min: 6)
     |> validate_format(:email, ~r/@/)
     |> unique_constraint([:email])
+    |> add_password_hash()
   end
 
   defp add_password_hash(

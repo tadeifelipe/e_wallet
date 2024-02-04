@@ -1,9 +1,6 @@
 defmodule EWalletService do
-  @moduledoc """
-  EWalletService keeps the contexts that define your domain
-  and business logic.
+  alias EWalletService.Users.Create, as: UserCreate
 
-  Contexts are also responsible for managing your data, regardless
-  if it comes from the database, an external API or others.
-  """
+  @spec create_user(any()) :: any()
+  defdelegate create_user(params), to: UserCreate, as: :call
 end

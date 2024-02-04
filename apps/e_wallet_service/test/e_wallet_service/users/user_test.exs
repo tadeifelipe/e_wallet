@@ -18,11 +18,13 @@ defmodule EWalletService.Users.UserTest do
         "password" => "password123"
       }
 
+      skip_field = [:password_hash]
+
       changeset = User.changeset(params)
 
       assert %Changeset{valid?: true, changes: changes} = changeset
 
-      for field <- @schema_fields do
+      for field <- @schema_fields, field not in skip_field do
         actual = Map.get(changes, field)
         expected = params[Atom.to_string(field)]
 
