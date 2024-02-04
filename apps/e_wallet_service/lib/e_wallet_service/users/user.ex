@@ -21,4 +21,12 @@ defmodule EWalletService.Users.User do
     |> validate_format(:email, ~r/@/)
     |> unique_constraint([:email])
   end
+
+  defp add_password_hash(
+         %Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset
+       ) do
+    change(changeset, %{password_hash: Pbkdf2.hash_pwd_salt(password)})
+  end
+
+  defp add_password_hash(changeset), do: changeset
 end
