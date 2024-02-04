@@ -1,6 +1,7 @@
 defmodule EWalletService.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
+  alias EWalletService.Accounts.Account
 
   @required_fields [:name, :email, :password]
 
@@ -9,6 +10,7 @@ defmodule EWalletService.Users.User do
     field :email, :string
     field :password, :string, virtual: true
     field :password_hash, :string
+    has_one :account, Account
 
     timestamps()
   end

@@ -24,7 +24,11 @@ defmodule EWalletServiceWeb.UserControllerTest do
                "user" => %{
                  "id" => _id,
                  "name" => "Felipe",
-                 "email" => "felipe@gmail.com"
+                 "email" => "felipe@gmail.com",
+                 "account" => %{
+                   "number" => _number,
+                   "balance" => "1000.00"
+                 }
                }
              } = response
     end
