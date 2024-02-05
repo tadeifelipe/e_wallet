@@ -3,12 +3,15 @@ defmodule EWalletService.Accounts.Account do
 
   import Ecto.Changeset
   alias EWalletService.Users.User
+  alias EWalletService.Deposits.Deposit
 
   @required_param [:balance, :user_id]
 
   schema "accounts" do
     field :balance, :decimal
+
     belongs_to :user, User
+    has_many :deposit, Deposit
 
     timestamps()
   end

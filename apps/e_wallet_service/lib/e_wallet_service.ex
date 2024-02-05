@@ -1,6 +1,7 @@
 defmodule EWalletService do
-  alias EWalletService.Users.Create, as: UserCreate
+  alias EWalletService.Users.Create, as: CreateUser
+  alias EWalletService.Deposits.Create, as: CreateBankDeposit
 
-  @spec create_user(any()) :: any()
-  defdelegate create_user(params), to: UserCreate, as: :call
+  defdelegate create_user(params), to: CreateUser, as: :call
+  defdelegate deposit(user_id, params), to: CreateBankDeposit, as: :call
 end
