@@ -5,10 +5,15 @@ defmodule EWalletServiceWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :auth do
+    plug EWalletServiceWeb.Plugs.AuthAccessPipeline
+  end
+
   scope "/api/v1", EWalletServiceWeb do
     pipe_through :api
 
     post "/users", UserController, :create
+    post "/signin", UserController, :sign_in
   end
 
   if Application.compile_env(:e_wallet_service, :dev_routes) do

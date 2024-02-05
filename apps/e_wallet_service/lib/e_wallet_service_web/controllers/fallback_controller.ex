@@ -14,4 +14,11 @@ defmodule EWalletServiceWeb.FallbackController do
     |> put_view(json: EWalletServiceWeb.ErrorJSON)
     |> render(:error, msg: :email_already_exists)
   end
+
+  def call(conn, {:error, :email_or_password_invalid}) do
+    conn
+    |> put_status(:unauthorized)
+    |> put_view(json: EWalletServiceWeb.ErrorJSON)
+    |> render(:error, msg: :email_or_password_invalid)
+  end
 end

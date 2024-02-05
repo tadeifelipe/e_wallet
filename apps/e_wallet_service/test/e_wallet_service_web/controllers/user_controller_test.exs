@@ -46,5 +46,28 @@ defmodule EWalletServiceWeb.UserControllerTest do
 
       assert %{"message" => "E-mail already exists"} = response
     end
+
+    test "should returns a user authenticated", %{
+      conn: conn,
+      user_params: user_params
+    } do
+      {:ok, _} = Create.call(user_params)
+
+      sign_in_body = %{
+        "email" => Map.get(user_params, "email"),
+        "password" => Map.get(user_params, "password"),
+      }
+
+      response =
+        conn
+        |> post(~p"/api/v1/signin", sign_in_body)
+        |> json_response(200)
+
+      assert %{
+        "message" => "User Authenticated",
+         "user" => %{
+            "name" => "Felipe", "nickname" => "felipe@gmail.com", "token" => _
+            }} = response
+    end
   end
 end

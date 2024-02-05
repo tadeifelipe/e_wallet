@@ -11,6 +11,10 @@ defmodule EWalletServiceWeb.ErrorJSON do
     %{message: "E-mail already exists"}
   end
 
+  def error(%{msg: :email_or_password_invalid}) do
+    %{message: "E-mail or password invalid"}
+  end
+
   defp translate_errors({msg, opts}) do
     Regex.replace(~r"%{(\w+)}", msg, fn _, key ->
       opts |> Keyword.get(String.to_existing_atom(key), key) |> to_string()
