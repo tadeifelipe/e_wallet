@@ -10,9 +10,7 @@ defmodule EWalletService.Accounts.AccountTest do
         user_id: 1
       }
 
-      changeset = Account.changeset(params)
-
-      assert %Changeset{valid?: true} = changeset
+      assert %Changeset{valid?: true} = Account.changeset(params)
     end
 
     test "should not return a valid changeset when user is not provided" do

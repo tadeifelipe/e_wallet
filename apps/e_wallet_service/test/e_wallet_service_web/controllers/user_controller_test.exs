@@ -55,7 +55,7 @@ defmodule EWalletServiceWeb.UserControllerTest do
 
       sign_in_body = %{
         "email" => Map.get(user_params, "email"),
-        "password" => Map.get(user_params, "password"),
+        "password" => Map.get(user_params, "password")
       }
 
       response =
@@ -64,10 +64,13 @@ defmodule EWalletServiceWeb.UserControllerTest do
         |> json_response(200)
 
       assert %{
-        "message" => "User Authenticated",
-         "user" => %{
-            "name" => "Felipe", "nickname" => "felipe@gmail.com", "token" => _
-            }} = response
+               "message" => "User Authenticated",
+               "user" => %{
+                 "name" => "Felipe",
+                 "nickname" => "felipe@gmail.com",
+                 "token" => _
+               }
+             } = response
     end
   end
 end

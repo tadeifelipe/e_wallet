@@ -1,4 +1,4 @@
-defmodule EWalletService.Deposits.Deposit do
+defmodule EWalletService.Accounts.Deposit do
   use Ecto.Schema
 
   import Ecto.Changeset
@@ -6,6 +6,7 @@ defmodule EWalletService.Deposits.Deposit do
   alias EWalletService.Accounts.Account
 
   @required_fields [:value, :type, :account_id]
+  @valid_types ["bank_deposit", "credit_card_deposit"]
 
   schema "deposits" do
     field :type, :string
@@ -23,5 +24,15 @@ defmodule EWalletService.Deposits.Deposit do
     |> cast(params, @required_fields)
     |> validate_required(@required_fields)
     |> check_constraint(:value, name: :value_must_be_positive)
+    |> check_type()
+  end
+
+  defp check_type(changeset) do
+    type = get_field(changeset, :type)
+
+    case Enum.member?(@valid_types, type) do
+      true -> changeset
+      false -> add_error(changeset, :type, "type deposit invalid")
+    end
   end
 end

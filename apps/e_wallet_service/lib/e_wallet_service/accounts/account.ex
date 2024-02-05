@@ -3,7 +3,7 @@ defmodule EWalletService.Accounts.Account do
 
   import Ecto.Changeset
   alias EWalletService.Users.User
-  alias EWalletService.Deposits.Deposit
+  alias EWalletService.Accounts.Deposit
 
   @required_param [:balance, :user_id]
 

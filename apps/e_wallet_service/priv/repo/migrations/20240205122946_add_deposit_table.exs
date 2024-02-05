@@ -2,7 +2,7 @@ defmodule EWalletService.Repo.Migrations.AddDepositTable do
   use Ecto.Migration
 
   def change do
-    create  table("deposits") do
+    create table("deposits") do
       add :type, :string, null: false
       add :value, :decimal, null: false
       add :token_card, :string

@@ -1,5 +1,5 @@
 defmodule EWalletServiceWeb.AccountController do
-  alias EWalletService.Deposits.Deposit
+  alias EWalletService.Accounts.Deposit
 
   use EWalletServiceWeb, :controller
 

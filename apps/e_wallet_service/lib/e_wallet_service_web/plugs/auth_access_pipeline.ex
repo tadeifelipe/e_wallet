@@ -11,8 +11,9 @@ defmodule EWalletServiceWeb.Plugs.AuthAccessPipeline do
       _error ->
         conn
         |> put_status(:unauthorized)
+        |> Phoenix.Controller.put_format(:json)
         |> Phoenix.Controller.put_view(json: EWalletServiceWeb.ErrorJSON)
-        |> Phoenix.Controller.render(:error, msg: :email_or_password_invalid)
+        |> Phoenix.Controller.render(:error, status: :unauthorized)
         |> halt()
     end
   end

@@ -21,4 +21,11 @@ defmodule EWalletServiceWeb.FallbackController do
     |> put_view(json: EWalletServiceWeb.ErrorJSON)
     |> render(:error, msg: :email_or_password_invalid)
   end
+
+  def call(conn) do
+    conn
+    |> put_status(:unauthorized)
+    |> put_view(json: EWalletServiceWeb.ErrorJSON)
+    |> render(:error)
+  end
 end

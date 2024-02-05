@@ -1,6 +1,6 @@
-defmodule EWalletService.Deposits.Create do
+defmodule EWalletService.Accounts.CreateDeposit do
   alias EWalletService.Repo
-  alias EWalletService.Deposits.Deposit
+  alias EWalletService.Accounts.Deposit
   alias EWalletService.Accounts.Account
 
   def call(user_id, params) do
