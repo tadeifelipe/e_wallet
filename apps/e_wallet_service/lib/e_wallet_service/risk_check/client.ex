@@ -1,8 +1,12 @@
 defmodule EWalletService.RiskCheck.Client do
   use Tesla
+  alias EWalletService.RiskCheck.ClientBehaviour
 
   @default_url "https://ewallet-risk-check.free.beeceptor.com"
 
+  @behaviour ClientBehaviour
+
+  @impl ClientBehaviour
   def call(url \\ @default_url) do
     url
     |> post("")

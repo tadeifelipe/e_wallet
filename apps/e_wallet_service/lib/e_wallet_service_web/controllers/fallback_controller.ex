@@ -26,14 +26,14 @@ defmodule EWalletServiceWeb.FallbackController do
     conn
     |> put_status(:bad_request)
     |> put_view(json: EWalletServiceWeb.ErrorJSON)
-    |> render(:error, :bad_request)
+    |> render(:error, msg: :bad_request)
   end
 
   def call(conn, {:error, :internal_server_error}) do
     conn
     |> put_status(:bad_request)
     |> put_view(json: EWalletServiceWeb.ErrorJSON)
-    |> render(:error, :bad_request)
+    |> render(:error, msg: :bad_request)
   end
 
   def call(conn) do

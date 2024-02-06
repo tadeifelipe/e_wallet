@@ -4,6 +4,8 @@ defmodule EWalletServiceWeb.AccountControllerTest do
   alias EWalletService.Users.Create, as: CreateUser
   alias EWalletServiceWeb.Token
 
+  import Mox
+
   setup do
     params = %{
       "name" => "John",
@@ -18,6 +20,10 @@ defmodule EWalletServiceWeb.AccountControllerTest do
 
   describe "deposit/2" do
     test "should create a deposit successfully", %{conn: conn, token: token} do
+      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
+        {:ok, %{"status" => "Approved"}}
+      end)
+
       params = %{
         "value" => "100.00",
         "type" => "bank_deposit"
@@ -42,6 +48,10 @@ defmodule EWalletServiceWeb.AccountControllerTest do
       conn: conn,
       token: token
     } do
+      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
+        {:ok, %{"status" => "Approved"}}
+      end)
+
       params = %{
         "value" => "100.00",
         "type" => "credit_card_deposit"
@@ -66,6 +76,10 @@ defmodule EWalletServiceWeb.AccountControllerTest do
       conn: conn,
       token: token
     } do
+      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
+        {:ok, %{"status" => "Approved"}}
+      end)
+
       params = %{
         "value" => "-100.00",
         "type" => "bank_deposit"
@@ -77,7 +91,7 @@ defmodule EWalletServiceWeb.AccountControllerTest do
         |> post(~p"/api/v1/accounts/deposit", params)
         |> json_response(400)
 
-        %{"message" => %{"value" => ["is invalid"]}} = response
+      %{"message" => %{"value" => ["is invalid"]}} = response
     end
   end
 end

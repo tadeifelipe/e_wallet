@@ -33,7 +33,7 @@ defmodule EWalletService.RiskCheck.ClientTest do
         |> endpoint_url()
         |> Client.call()
 
-        assert actual_response = expected_response
+      assert actual_response = expected_response
     end
   end
 

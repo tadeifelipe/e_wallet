@@ -5,6 +5,8 @@ defmodule EWalletService.Accounts.CreateDepositTest do
   alias EWalletService.Accounts.CreateDeposit
   alias EWalletService.Users.Create, as: CreateUser
 
+  import Mox
+
   setup do
     params = %{
       "name" => "John",
@@ -12,12 +14,19 @@ defmodule EWalletService.Accounts.CreateDepositTest do
       "password" => "password123"
     }
 
+    return_risk_check = %{
+      "status" => "Approved"
+    }
+
     {:ok, user} = CreateUser.call(params)
-    {:ok, user: user}
+    {:ok, user: user, body: return_risk_check}
   end
 
   describe "call/2" do
-    test "should create a deposit successfully", %{user: user} do
+    test "should create a deposit successfully", %{user: user, body: body} do
+      EWalletService.RiskCheck.ClientMock
+      |> expect(:call, fn -> {:ok, body} end)
+
       params = %{
         "account_id" => user.account.id,
         "type" => "bank_deposit",
@@ -36,7 +45,13 @@ defmodule EWalletService.Accounts.CreateDepositTest do
       end
     end
 
-    test "should create a deposit successfully with credit_card_deposit type", %{user: user} do
+    test "should create a deposit successfully with credit_card_deposit type", %{
+      user: user,
+      body: body
+    } do
+      EWalletService.RiskCheck.ClientMock
+      |> expect(:call, fn -> {:ok, body} end)
+
       params = %{
         "account_id" => user.account.id,
         "type" => "credit_card_deposit",
@@ -55,7 +70,10 @@ defmodule EWalletService.Accounts.CreateDepositTest do
       end
     end
 
-    test "should not create a deposit with invalid value", %{user: user} do
+    test "should not create a deposit with invalid value", %{user: user, body: body} do
+      EWalletService.RiskCheck.ClientMock
+      |> expect(:call, fn -> {:ok, body} end)
+
       params = %{
         "account_id" => user.account.id,
         "type" => "credit_card_deposit",
