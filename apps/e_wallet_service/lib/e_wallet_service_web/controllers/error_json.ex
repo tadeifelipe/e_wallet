@@ -11,6 +11,10 @@ defmodule EWalletServiceWeb.ErrorJSON do
     %{message: "E-mail or password invalid"}
   end
 
+  def error(%{msg: :bad_request}) do
+    %{message: "Somenthing went wrong"}
+  end
+
   def error(%{status: status}) do
     %{status: status}
   end
