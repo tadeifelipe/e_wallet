@@ -7,7 +7,7 @@ defmodule EWalletService.Repo.Migrations.AddDepositTable do
       add :value, :decimal, null: false
       add :token_card, :string
       add :account_id, references(:accounts)
-      add :accomplished, :boolean
+      add :status, :string
 
       timestamps()
     end

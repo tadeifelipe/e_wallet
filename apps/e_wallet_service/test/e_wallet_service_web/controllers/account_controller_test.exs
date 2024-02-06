@@ -39,7 +39,8 @@ defmodule EWalletServiceWeb.AccountControllerTest do
         "message" => "Deposit received",
         "deposit" => %{
           "type" => "bank_deposit",
-          "value" => "100.00"
+          "value" => "100.00",
+          "status" => "CREATED"
         }
       } = response
     end
@@ -54,7 +55,8 @@ defmodule EWalletServiceWeb.AccountControllerTest do
 
       params = %{
         "value" => "100.00",
-        "type" => "credit_card_deposit"
+        "type" => "credit_card_deposit",
+        "token_card" => "token"
       }
 
       response =
@@ -67,9 +69,33 @@ defmodule EWalletServiceWeb.AccountControllerTest do
         "message" => "Deposit received",
         "deposit" => %{
           "type" => "credit_card_deposit",
-          "value" => "100.00"
+          "value" => "100.00",
+          "status" => "CREATED"
         }
       } = response
+    end
+
+    test "should not create a deposit successfully with credit_card type deposit and token is not informed",
+         %{
+           conn: conn,
+           token: token
+         } do
+      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
+        {:ok, %{"status" => "Approved"}}
+      end)
+
+      params = %{
+        "value" => "100.00",
+        "type" => "credit_card_deposit"
+      }
+
+      response =
+        conn
+        |> put_req_header("authorization", "Bearer " <> token)
+        |> post(~p"/api/v1/accounts/deposit", params)
+        |> json_response(400)
+
+      %{"message" => %{"token_card" => ["token card must be informed"]}} = response
     end
 
     test "should return bad request when try to deposit a invalid value", %{

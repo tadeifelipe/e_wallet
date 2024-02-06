@@ -18,15 +18,34 @@ defmodule EWalletService.Accounts.DepositTest do
       params = %{
         account_id: 1,
         type: "credit_card_deposit",
+        token_card: "token_card",
         value: "100.00"
       }
 
       assert %Changeset{valid?: true} = Deposit.changeset(params)
     end
 
+    test "should not return a valid changeset when type is credit_card and token not informed" do
+      params = %{
+        account_id: 1,
+        type: "credit_card_deposit",
+        value: "100.00"
+      }
+
+      assert %Changeset{valid?: false, errors: errors} = Deposit.changeset(params)
+
+      for error <- errors do
+        {field, {msg, _}} = error
+
+        assert field == :token_card
+        assert msg =~ "token card must be informed"
+      end
+    end
+
     test "should not return a valid changeset when required field is not provided" do
       params = %{
         type: "credit_card_deposit",
+        token_card: "token_card",
         value: "100.00"
       }
 

@@ -4,7 +4,8 @@ defmodule EWalletServiceWeb.AccountJSON do
       message: "Deposit received",
       deposit: %{
         value: deposit.value,
-        type: deposit.type
+        type: deposit.type,
+        status: deposit.status
       }
     }
   end

@@ -16,10 +16,13 @@ defmodule EWalletService.Accounts.CreateDeposit do
       params = Map.put(params, "account_id", account.id)
 
       params
+      |> set_status_created()
       |> Deposit.changeset()
       |> Repo.insert()
     end
   end
+
+  defp set_status_created(params), do: Map.put(params, "status", "CREATED")
 
   defp risk_check_client() do
     Application.get_env(:e_wallet_service, :risk_check_client, RiskCheckClient)

@@ -43,6 +43,8 @@ defmodule EWalletService.Accounts.CreateDepositTest do
 
         assert actual == expected
       end
+
+      assert deposit_from_db.status == deposit.status
     end
 
     test "should create a deposit successfully with credit_card_deposit type", %{
@@ -55,6 +57,7 @@ defmodule EWalletService.Accounts.CreateDepositTest do
       params = %{
         "account_id" => user.account.id,
         "type" => "credit_card_deposit",
+        "token_card" => "token",
         "value" => "100.00"
       }
 
@@ -68,6 +71,8 @@ defmodule EWalletService.Accounts.CreateDepositTest do
 
         assert actual == expected
       end
+
+      assert deposit_from_db.status == deposit.status
     end
 
     test "should not create a deposit with invalid value", %{user: user, body: body} do
@@ -77,6 +82,7 @@ defmodule EWalletService.Accounts.CreateDepositTest do
       params = %{
         "account_id" => user.account.id,
         "type" => "credit_card_deposit",
+        "token_card" => "token",
         "value" => "-100.00"
       }
 
