@@ -4,6 +4,7 @@ defmodule EWalletService.Accounts.Account do
   import Ecto.Changeset
   alias EWalletService.Users.User
   alias EWalletService.Accounts.Deposit
+  alias EWalletService.Payments.Payment
 
   @required_param [:balance, :user_id]
 
@@ -12,6 +13,7 @@ defmodule EWalletService.Accounts.Account do
 
     belongs_to :user, User
     has_many :deposit, Deposit
+    has_many :payment, Payment
 
     timestamps()
   end
