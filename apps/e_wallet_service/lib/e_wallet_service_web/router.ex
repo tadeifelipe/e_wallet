@@ -21,6 +21,7 @@ defmodule EWalletServiceWeb.Router do
     pipe_through :auth
 
     post "/accounts/deposit", AccountController, :deposit
+    post "/payments", PaymentController, :create
   end
 
   if Application.compile_env(:e_wallet_service, :dev_routes) do

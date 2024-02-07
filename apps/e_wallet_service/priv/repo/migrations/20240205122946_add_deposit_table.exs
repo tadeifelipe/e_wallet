@@ -12,6 +12,6 @@ defmodule EWalletService.Repo.Migrations.AddDepositTable do
       timestamps()
     end
 
-    create constraint(:deposits, :value_must_be_positive, check: "value >0")
+    create constraint(:deposits, :value_must_be_positive, check: "value > 0")
   end
 end
