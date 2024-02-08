@@ -15,15 +15,18 @@ defmodule EWalletServiceWeb.AccountControllerTest do
 
     {:ok, user} = CreateUser.call(params)
 
+    expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
+      {:ok, %{"status" => "Approved"}}
+    end)
+
+    EWalletServiceWeb.Kafka.PublisherMock
+    |> expect(:call, fn {value, message}, _operation -> {value, message} end)
+
     {:ok, token: Token.sign(user)}
   end
 
   describe "deposit/2" do
     test "should create a deposit successfully", %{conn: conn, token: token} do
-      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
-        {:ok, %{"status" => "Approved"}}
-      end)
-
       params = %{
         "value" => "100.00",
         "type" => "bank_deposit"
@@ -49,10 +52,6 @@ defmodule EWalletServiceWeb.AccountControllerTest do
       conn: conn,
       token: token
     } do
-      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
-        {:ok, %{"status" => "Approved"}}
-      end)
-
       params = %{
         "value" => "100.00",
         "type" => "credit_card_deposit",
@@ -80,10 +79,6 @@ defmodule EWalletServiceWeb.AccountControllerTest do
            conn: conn,
            token: token
          } do
-      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
-        {:ok, %{"status" => "Approved"}}
-      end)
-
       params = %{
         "value" => "100.00",
         "type" => "credit_card_deposit"
@@ -102,10 +97,6 @@ defmodule EWalletServiceWeb.AccountControllerTest do
       conn: conn,
       token: token
     } do
-      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
-        {:ok, %{"status" => "Approved"}}
-      end)
-
       params = %{
         "value" => "-100.00",
         "type" => "bank_deposit"
@@ -143,10 +134,6 @@ defmodule EWalletServiceWeb.AccountControllerTest do
 
     test "should create a transfer successfully",
          %{conn: conn, token: token, user_jospeh: user_jospeh} do
-      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
-        {:ok, %{"status" => "Approved"}}
-      end)
-
       params = %{
         "value" => "100.00",
         "to_account_id" => user_jospeh.account.id
@@ -171,10 +158,6 @@ defmodule EWalletServiceWeb.AccountControllerTest do
 
     test "should not create a transfer when to_account not exists",
          %{conn: conn, token: token} do
-      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
-        {:ok, %{"status" => "Approved"}}
-      end)
-
       params = %{
         "value" => "100.00",
         "to_account_id" => 99999
@@ -191,10 +174,6 @@ defmodule EWalletServiceWeb.AccountControllerTest do
 
     test "should not create a transfer when value is negative",
          %{conn: conn, token: token, user_jospeh: user_jospeh} do
-      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
-        {:ok, %{"status" => "Approved"}}
-      end)
-
       params = %{
         "value" => "-100.00",
         "to_account_id" => user_jospeh.account.id
@@ -211,10 +190,6 @@ defmodule EWalletServiceWeb.AccountControllerTest do
 
     test "should not create a transfer when value is invalid",
          %{conn: conn, token: token, user_jospeh: user_jospeh} do
-      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
-        {:ok, %{"status" => "Approved"}}
-      end)
-
       params = %{
         "value" => "invalid",
         "to_account_id" => user_jospeh.account.id

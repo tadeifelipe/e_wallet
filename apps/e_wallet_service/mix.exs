@@ -23,7 +23,7 @@ defmodule EWalletService.MixProject do
   def application do
     [
       mod: {EWalletService.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :brod]
     ]
   end
 
@@ -50,6 +50,7 @@ defmodule EWalletService.MixProject do
       {:bandit, "~> 1.2"},
       {:pbkdf2_elixir, "~> 2.0"},
       {:tesla, "~> 1.4"},
+      {:brod, "~> 3.17.0"},
       {:bypass, "~> 2.1", only: :test},
       {:mox, "~> 1.0", only: :test}
     ]

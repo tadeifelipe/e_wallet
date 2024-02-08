@@ -27,18 +27,20 @@ defmodule EWalletService.Accounts.CreateTransferTest do
     {:ok, user_john} = CreateUser.call(john)
     {:ok, user_jospeh} = CreateUser.call(joseph)
 
-    {:ok, user_john: user_john, user_jospeh: user_jospeh, body: return_risk_check}
+    EWalletService.RiskCheck.ClientMock
+    |> expect(:call, fn -> {:ok, return_risk_check} end)
+
+    EWalletServiceWeb.Kafka.PublisherMock
+    |> expect(:call, fn {value, message}, _operation -> {value, message} end)
+
+    {:ok, user_john: user_john, user_jospeh: user_jospeh}
   end
 
   describe "call/2" do
     test "should create a transfer successfully", %{
       user_john: user_john,
-      user_jospeh: user_jospeh,
-      body: body
+      user_jospeh: user_jospeh
     } do
-      EWalletService.RiskCheck.ClientMock
-      |> expect(:call, fn -> {:ok, body} end)
-
       params = %{
         "to_account_id" => user_jospeh.account.id,
         "value" => "100.00"
@@ -52,12 +54,8 @@ defmodule EWalletService.Accounts.CreateTransferTest do
     end
 
     test "should not create a transfer when to_account not exists", %{
-      user_john: user_john,
-      body: body
+      user_john: user_john
     } do
-      EWalletService.RiskCheck.ClientMock
-      |> expect(:call, fn -> {:ok, body} end)
-
       params = %{
         "to_account_id" => 999_999,
         "value" => "100.00"
@@ -68,12 +66,8 @@ defmodule EWalletService.Accounts.CreateTransferTest do
 
     test "should not create a transfer when value is negative", %{
       user_john: user_john,
-      user_jospeh: user_jospeh,
-      body: body
+      user_jospeh: user_jospeh
     } do
-      EWalletService.RiskCheck.ClientMock
-      |> expect(:call, fn -> {:ok, body} end)
-
       params = %{
         "to_account_id" => user_jospeh.account.id,
         "value" => "-100.00"
@@ -88,15 +82,8 @@ defmodule EWalletService.Accounts.CreateTransferTest do
 
     test "should not create a transfer when value is invalid", %{
       user_john: user_john,
-      user_jospeh: user_jospeh,
-      body: body
+      user_jospeh: user_jospeh
     } do
-      EWalletService.RiskCheck.ClientMock
-      |> expect(:call, fn -> {:ok, body} end)
-
-      EWalletService.RiskCheck.ClientMock
-      |> expect(:call, fn -> {:ok, body} end)
-
       params = %{
         "to_account_id" => user_jospeh.account.id,
         "value" => "invalid"

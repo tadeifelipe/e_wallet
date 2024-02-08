@@ -15,15 +15,18 @@ defmodule EWalletServiceWeb.PaymentControllerTest do
 
     {:ok, user} = CreateUser.call(params)
 
+    expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
+      {:ok, %{"status" => "Approved"}}
+    end)
+
+    EWalletServiceWeb.Kafka.PublisherMock
+    |> expect(:call, fn {value, message}, _operation -> {value, message} end)
+
     {:ok, token: Token.sign(user)}
   end
 
   describe "create/2" do
     test "should create a payment successfully", %{conn: conn, token: token} do
-      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
-        {:ok, %{"status" => "Approved"}}
-      end)
-
       params = %{
         "value" => "100.00"
       }
@@ -47,10 +50,6 @@ defmodule EWalletServiceWeb.PaymentControllerTest do
       conn: conn,
       token: token
     } do
-      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
-        {:ok, %{"status" => "Approved"}}
-      end)
-
       params = %{
         "value" => "-100.00"
       }

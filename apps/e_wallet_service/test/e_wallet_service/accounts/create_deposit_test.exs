@@ -19,14 +19,18 @@ defmodule EWalletService.Accounts.CreateDepositTest do
     }
 
     {:ok, user} = CreateUser.call(params)
-    {:ok, user: user, body: return_risk_check}
+
+    EWalletService.RiskCheck.ClientMock
+    |> expect(:call, fn -> {:ok, return_risk_check} end)
+
+    EWalletServiceWeb.Kafka.PublisherMock
+    |> expect(:call, fn {value, message}, _operation -> {value, message} end)
+
+    {:ok, user: user}
   end
 
   describe "call/2" do
-    test "should create a deposit successfully", %{user: user, body: body} do
-      EWalletService.RiskCheck.ClientMock
-      |> expect(:call, fn -> {:ok, body} end)
-
+    test "should create a deposit successfully", %{user: user} do
       params = %{
         "account_id" => user.account.id,
         "type" => "bank_deposit",
@@ -48,12 +52,8 @@ defmodule EWalletService.Accounts.CreateDepositTest do
     end
 
     test "should create a deposit successfully with credit_card_deposit type", %{
-      user: user,
-      body: body
+      user: user
     } do
-      EWalletService.RiskCheck.ClientMock
-      |> expect(:call, fn -> {:ok, body} end)
-
       params = %{
         "account_id" => user.account.id,
         "type" => "credit_card_deposit",
@@ -75,10 +75,7 @@ defmodule EWalletService.Accounts.CreateDepositTest do
       assert deposit_from_db.status == deposit.status
     end
 
-    test "should not create a deposit with negative value", %{user: user, body: body} do
-      EWalletService.RiskCheck.ClientMock
-      |> expect(:call, fn -> {:ok, body} end)
-
+    test "should not create a deposit with negative value", %{user: user} do
       params = %{
         "account_id" => user.account.id,
         "type" => "credit_card_deposit",
@@ -93,10 +90,7 @@ defmodule EWalletService.Accounts.CreateDepositTest do
       end
     end
 
-    test "should not create a deposit with invalid value", %{user: user, body: body} do
-      EWalletService.RiskCheck.ClientMock
-      |> expect(:call, fn -> {:ok, body} end)
-
+    test "should not create a deposit with invalid value", %{user: user} do
       params = %{
         "account_id" => user.account.id,
         "type" => "credit_card_deposit",

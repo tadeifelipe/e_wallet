@@ -1,8 +1,6 @@
 defmodule EWalletService.Accounts.Deposit do
   use Ecto.Schema
-
   import Ecto.Changeset
-
   alias EWalletService.Accounts.Account
 
   @all_fields [:type, :value, :token_card, :status, :account_id, :note]

@@ -17,7 +17,11 @@ defmodule EWalletService.Application do
       # Start a worker by calling: EWalletService.Worker.start_link(arg)
       # {EWalletService.Worker, arg},
       # Start to serve requests, typically the last entry
-      EWalletServiceWeb.Endpoint
+      EWalletServiceWeb.Endpoint,
+      %{
+        id: EWalletServiceWeb.Kafka.Publisher,
+        start: {EWalletServiceWeb.Kafka.Publisher, :start_link, [0]}
+      }
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
