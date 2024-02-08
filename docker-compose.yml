@@ -8,9 +8,15 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
-    networks:
-      - my_network
-
-networks:
-  my_network:
-    driver: bridge
+  
+  landoopkafka:
+    image: landoop/fast-data-dev
+    ports:
+      - 2181:2181 
+      - 3030:3030
+      - 8081:8081 
+      - 8082:8082 
+      - 8083:8083
+      - 9092:9092
+    environment:
+      ADV_HOST: 127.0.0.1
