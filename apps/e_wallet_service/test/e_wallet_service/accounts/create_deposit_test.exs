@@ -75,7 +75,7 @@ defmodule EWalletService.Accounts.CreateDepositTest do
       assert deposit_from_db.status == deposit.status
     end
 
-    test "should not create a deposit with invalid value", %{user: user, body: body} do
+    test "should not create a deposit with negative value", %{user: user, body: body} do
       EWalletService.RiskCheck.ClientMock
       |> expect(:call, fn -> {:ok, body} end)
 
@@ -91,6 +91,20 @@ defmodule EWalletService.Accounts.CreateDepositTest do
       for error <- errors do
         assert {:value, {"is invalid", [_, {_, "value_must_be_positive"}]}} = error
       end
+    end
+
+    test "should not create a deposit with invalid value", %{user: user, body: body} do
+      EWalletService.RiskCheck.ClientMock
+      |> expect(:call, fn -> {:ok, body} end)
+
+      params = %{
+        "account_id" => user.account.id,
+        "type" => "credit_card_deposit",
+        "token_card" => "token",
+        "value" => "invalid"
+      }
+
+      {:error, :invalid_value} = CreateDeposit.call(user.id, params)
     end
   end
 end

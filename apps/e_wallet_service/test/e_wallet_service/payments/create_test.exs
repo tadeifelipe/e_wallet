@@ -39,7 +39,7 @@ defmodule EWalletService.Payments.CreateTest do
     end
   end
 
-  test "should not create a payment with invalid value", %{user: user, body: body} do
+  test "should not create a payment with negative value", %{user: user, body: body} do
     EWalletService.RiskCheck.ClientMock
     |> expect(:call, fn -> {:ok, body} end)
 
@@ -52,5 +52,16 @@ defmodule EWalletService.Payments.CreateTest do
     for error <- errors do
       assert {:value, {"is invalid", [_, {_, "value_must_be_positive"}]}} = error
     end
+  end
+
+  test "should not create a payment with invalid value", %{user: user, body: body} do
+    EWalletService.RiskCheck.ClientMock
+    |> expect(:call, fn -> {:ok, body} end)
+
+    params = %{
+      "value" => "invalid"
+    }
+
+    {:error, :invalid_value} = CreatePayment.call(user.id, params)
   end
 end

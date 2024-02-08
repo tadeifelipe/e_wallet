@@ -4,10 +4,13 @@ defmodule EWalletService.Accounts.CreateDeposit do
   alias EWalletService.Accounts.Account
   alias EWalletService.RiskCheck.Client, as: RiskCheckClient
 
-  def call(user_id, params) do
-    case Repo.get_by(Account, user_id: user_id) do
-      %Account{} = account -> make_deposit(account, params)
-      nil -> {:error, :account_not_found}
+  def call(user_id, %{"value" => value} = params) do
+    with %Account{} = account <- Repo.get_by(Account, user_id: user_id),
+         {:ok, _} <- Decimal.cast(value) do
+      make_deposit(account, params)
+    else
+      nil -> {:error, :not_found}
+      :error -> {:error, :invalid_value}
     end
   end
 
