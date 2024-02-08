@@ -21,6 +21,7 @@ defmodule EWalletServiceWeb.Router do
     pipe_through :auth
 
     post "/accounts/deposit", AccountController, :deposit
+    post "/accounts/transfer", AccountController, :transfer
     post "/payments", PaymentController, :create
   end
 

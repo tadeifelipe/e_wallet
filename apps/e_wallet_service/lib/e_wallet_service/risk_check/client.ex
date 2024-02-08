@@ -14,7 +14,8 @@ defmodule EWalletService.RiskCheck.Client do
   end
 
   defp handle_response({:ok, %Tesla.Env{status: 200, body: body}}) do
-    {:ok, body}
+    response = Jason.decode!(body)
+    {:ok, %{status: Map.get(response, "status")}}
   end
 
   defp handle_response({:ok, %Tesla.Env{status: 400}}) do

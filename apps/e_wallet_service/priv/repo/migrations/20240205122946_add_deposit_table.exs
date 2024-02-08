@@ -8,6 +8,7 @@ defmodule EWalletService.Repo.Migrations.AddDepositTable do
       add :token_card, :string
       add :account_id, references(:accounts)
       add :status, :string
+      add :note, :string
 
       timestamps()
     end

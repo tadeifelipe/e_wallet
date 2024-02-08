@@ -120,4 +120,113 @@ defmodule EWalletServiceWeb.AccountControllerTest do
       %{"message" => %{"value" => ["is invalid"]}} = response
     end
   end
+
+  describe "transfer/2" do
+    setup do
+      john = %{
+        "name" => "John",
+        "email" => "userjohn@email.com",
+        "password" => "password123"
+      }
+
+      joseph = %{
+        "name" => "Joseph",
+        "email" => "joseph@email.com",
+        "password" => "password123"
+      }
+
+      {:ok, user_john} = CreateUser.call(john)
+      {:ok, user_jospeh} = CreateUser.call(joseph)
+
+      {:ok, user_jospeh: user_jospeh, token: Token.sign(user_john)}
+    end
+
+    test "should create a transfer successfully",
+         %{conn: conn, token: token, user_jospeh: user_jospeh} do
+      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
+        {:ok, %{"status" => "Approved"}}
+      end)
+
+      params = %{
+        "value" => "100.00",
+        "to_account_id" => user_jospeh.account.id
+      }
+
+      response =
+        conn
+        |> put_req_header("authorization", "Bearer " <> token)
+        |> post(~p"/api/v1/accounts/transfer", params)
+        |> json_response(200)
+
+      %{
+        "transfer" => %{
+          "from_account" => _,
+          "status" => "CREATED",
+          "to_account" => _,
+          "value" => "100.00"
+        },
+        "message" => "Transfer received"
+      } = response
+    end
+
+    test "should not create a transfer when to_account not exists",
+         %{conn: conn, token: token} do
+      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
+        {:ok, %{"status" => "Approved"}}
+      end)
+
+      params = %{
+        "value" => "100.00",
+        "to_account_id" => 99999
+      }
+
+      response =
+        conn
+        |> put_req_header("authorization", "Bearer " <> token)
+        |> post(~p"/api/v1/accounts/transfer", params)
+        |> json_response(404)
+
+      %{"message" => "Account not exists"} = response
+    end
+
+    test "should not create a transfer when value is negative",
+         %{conn: conn, token: token, user_jospeh: user_jospeh} do
+      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
+        {:ok, %{"status" => "Approved"}}
+      end)
+
+      params = %{
+        "value" => "-100.00",
+        "to_account_id" => user_jospeh.account.id
+      }
+
+      response =
+        conn
+        |> put_req_header("authorization", "Bearer " <> token)
+        |> post(~p"/api/v1/accounts/transfer", params)
+        |> json_response(400)
+
+      %{"message" => %{"value" => ["is invalid"]}} = response
+    end
+
+    test "should not create a transfer when value is invalid",
+         %{conn: conn, token: token, user_jospeh: user_jospeh} do
+      expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
+        {:ok, %{"status" => "Approved"}}
+      end)
+
+      params = %{
+        "value" => "invalid",
+        "to_account_id" => user_jospeh.account.id
+      }
+
+      response =
+        conn
+        |> put_req_header("authorization", "Bearer " <> token)
+        |> post(~p"/api/v1/accounts/transfer", params)
+        |> json_response(400)
+
+      %{"message" => "Invalid value"} = response
+    end
+  end
 end

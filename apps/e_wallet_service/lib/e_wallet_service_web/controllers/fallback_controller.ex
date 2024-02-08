@@ -36,6 +36,20 @@ defmodule EWalletServiceWeb.FallbackController do
     |> render(:error, msg: :bad_request)
   end
 
+  def call(conn, {:error, :not_found}) do
+    conn
+    |> put_status(:not_found)
+    |> put_view(json: EWalletServiceWeb.ErrorJSON)
+    |> render(:error, msg: :not_found)
+  end
+
+  def call(conn, {:error, :invalid_value}) do
+    conn
+    |> put_status(:bad_request)
+    |> put_view(json: EWalletServiceWeb.ErrorJSON)
+    |> render(:error, msg: :invalid_value)
+  end
+
   def call(conn) do
     conn
     |> put_status(:unauthorized)

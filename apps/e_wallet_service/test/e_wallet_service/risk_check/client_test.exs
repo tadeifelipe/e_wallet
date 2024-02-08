@@ -21,19 +21,13 @@ defmodule EWalletService.RiskCheck.ClientTest do
         |> Plug.Conn.resp(200, body_resp)
       end)
 
-      expected_response = {
-        :ok,
-        %{
-          "status" => "Approved"
-        }
-      }
-
-      actual_response =
-        bypass.port
-        |> endpoint_url()
-        |> Client.call()
-
-      assert actual_response = expected_response
+      assert {:ok,
+              %{
+                status: "Approved"
+              }} =
+               bypass.port
+               |> endpoint_url()
+               |> Client.call()
     end
   end
 

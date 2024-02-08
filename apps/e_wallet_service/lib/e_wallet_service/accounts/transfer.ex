@@ -1,19 +1,20 @@
-defmodule EWalletService.Payments.Payment do
+defmodule EWalletService.Accounts.Transfer do
   use Ecto.Schema
 
   import Ecto.Changeset
 
   alias EWalletService.Accounts.Account
 
-  @all_fields [:value, :status, :account_id, :note]
-  @required_fields [:value, :status, :account_id]
+  @all_fields [:value, :to_account_id, :from_account_id, :status, :note]
+  @required_fields [:value, :to_account_id, :from_account_id]
 
-  schema "payments" do
+  schema "transfers" do
     field :value, :decimal
     field :status, :string
     field :note, :string
 
-    belongs_to :account, Account
+    belongs_to :to_account, Account, foreign_key: :to_account_id
+    belongs_to :from_account, Account, foreign_key: :from_account_id
 
     timestamps()
   end

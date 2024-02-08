@@ -9,4 +9,16 @@ defmodule EWalletServiceWeb.AccountJSON do
       }
     }
   end
+
+  def transfer(%{transfer: transfer}) do
+    %{
+      message: "Transfer received",
+      transfer: %{
+        value: transfer.value,
+        to_account: transfer.to_account_id,
+        from_account: transfer.from_account_id,
+        status: transfer.status
+      }
+    }
+  end
 end

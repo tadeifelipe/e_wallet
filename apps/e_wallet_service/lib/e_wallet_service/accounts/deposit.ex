@@ -5,7 +5,7 @@ defmodule EWalletService.Accounts.Deposit do
 
   alias EWalletService.Accounts.Account
 
-  @all_fields [:type, :value, :token_card, :status, :account_id]
+  @all_fields [:type, :value, :token_card, :status, :account_id, :note]
   @required_fields [:value, :type, :account_id]
   @valid_types ["bank_deposit", "credit_card_deposit"]
 
@@ -14,6 +14,7 @@ defmodule EWalletService.Accounts.Deposit do
     field :value, :decimal
     field :token_card, :string
     field :status, :string
+    field :note, :string
 
     belongs_to :account, Account
 

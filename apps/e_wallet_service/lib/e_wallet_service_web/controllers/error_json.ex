@@ -19,6 +19,14 @@ defmodule EWalletServiceWeb.ErrorJSON do
     %{message: "Somenthing went wrong"}
   end
 
+  def error(%{msg: :invalid_value}) do
+    %{message: "Invalid value"}
+  end
+
+  def error(%{msg: :not_found}) do
+    %{message: "Account not exists"}
+  end
+
   def error(%{status: status}) do
     %{status: status}
   end

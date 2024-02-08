@@ -5,6 +5,7 @@ defmodule EWalletService.Repo.Migrations.AddPaymentTable do
     create table("payments") do
       add :value, :decimal, null: false
       add :status, :string
+      add :note, :string
 
       add :account_id, references(:accounts)
 

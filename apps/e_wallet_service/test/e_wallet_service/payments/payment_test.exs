@@ -17,7 +17,7 @@ defmodule EWalletService.Payments.PaymentTest do
     test "should not return a valid changeset when required field is not provided" do
       params = %{
         value: "100.00",
-        status: "CREATED",
+        status: "CREATED"
       }
 
       assert %Changeset{valid?: false, errors: errors} = Payment.changeset(params)

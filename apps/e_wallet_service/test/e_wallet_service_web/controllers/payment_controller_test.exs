@@ -34,16 +34,19 @@ defmodule EWalletServiceWeb.PaymentControllerTest do
         |> post(~p"/api/v1/payments", params)
         |> json_response(200)
 
-        %{
-          "message" => "Payment received",
-          "payment" => %{
-            "value" => "100.00",
-            "status" => "CREATED"
-          }
-        } = response
+      %{
+        "message" => "Payment received",
+        "payment" => %{
+          "value" => "100.00",
+          "status" => "CREATED"
+        }
+      } = response
     end
 
-    test "should not create a payment successfully when value is invalid", %{conn: conn, token: token} do
+    test "should not create a payment successfully when value is invalid", %{
+      conn: conn,
+      token: token
+    } do
       expect(EWalletService.RiskCheck.ClientMock, :call, fn ->
         {:ok, %{"status" => "Approved"}}
       end)
@@ -58,7 +61,7 @@ defmodule EWalletServiceWeb.PaymentControllerTest do
         |> post(~p"/api/v1/payments", params)
         |> json_response(400)
 
-        %{"message" => %{"value" => ["is invalid"]}} = response
+      %{"message" => %{"value" => ["is invalid"]}} = response
     end
   end
 end
