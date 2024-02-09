@@ -30,7 +30,7 @@ defmodule EWalletService.Accounts.CreateTransferTest do
     EWalletService.RiskCheck.ClientMock
     |> expect(:call, fn -> {:ok, return_risk_check} end)
 
-    EWalletServiceWeb.Kafka.PublisherMock
+    EWalletServiceWeb.Kafka.ProducerMock
     |> expect(:call, fn {value, message}, _operation -> {value, message} end)
 
     {:ok, user_john: user_john, user_jospeh: user_jospeh}

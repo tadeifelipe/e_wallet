@@ -17,12 +17,16 @@ defmodule EWalletService.Application do
       # Start a worker by calling: EWalletService.Worker.start_link(arg)
       # {EWalletService.Worker, arg},
       # Start to serve requests, typically the last entry
-      EWalletServiceWeb.Endpoint,
-      %{
-        id: EWalletServiceWeb.Kafka.Publisher,
-        start: {EWalletServiceWeb.Kafka.Publisher, :start_link, [0]}
-      }
+      EWalletServiceWeb.Endpoint
     ]
+
+    if Application.get_env(:e_wallet_service, EWalletServiceWeb.Kafka.Producer)[:enabled]  do
+      children = [ children |
+      %{
+        id: EWalletServiceWeb.Kafka.Producer,
+        start: {EWalletServiceWeb.Kafka.Producer, :start_link, []}
+      }]
+    end
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

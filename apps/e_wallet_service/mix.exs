@@ -50,9 +50,11 @@ defmodule EWalletService.MixProject do
       {:bandit, "~> 1.2"},
       {:pbkdf2_elixir, "~> 2.0"},
       {:tesla, "~> 1.4"},
+      {:hackney, "~> 1.17"},
       {:brod, "~> 3.17.0"},
       {:bypass, "~> 2.1", only: :test},
-      {:mox, "~> 1.0", only: :test}
+      {:mox, "~> 1.0", only: :test},
+      {:testcontainers, "~> 1.6"}
     ]
   end
 

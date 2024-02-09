@@ -19,7 +19,7 @@ defmodule EWalletServiceWeb.PaymentControllerTest do
       {:ok, %{"status" => "Approved"}}
     end)
 
-    EWalletServiceWeb.Kafka.PublisherMock
+    EWalletServiceWeb.Kafka.ProducerMock
     |> expect(:call, fn {value, message}, _operation -> {value, message} end)
 
     {:ok, token: Token.sign(user)}

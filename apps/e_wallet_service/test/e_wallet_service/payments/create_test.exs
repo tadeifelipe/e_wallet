@@ -23,7 +23,7 @@ defmodule EWalletService.Payments.CreateTest do
     EWalletService.RiskCheck.ClientMock
     |> expect(:call, fn -> {:ok, return_risk_check} end)
 
-    EWalletServiceWeb.Kafka.PublisherMock
+    EWalletServiceWeb.Kafka.ProducerMock
     |> expect(:call, fn {value, message}, _operation -> {value, message} end)
 
     {:ok, user: user}
@@ -44,8 +44,6 @@ defmodule EWalletService.Payments.CreateTest do
   end
 
   test "should not create a payment with negative value", %{user: user} do
-
-
     params = %{
       "value" => "-100.00"
     }
