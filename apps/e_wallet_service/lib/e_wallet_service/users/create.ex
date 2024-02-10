@@ -4,7 +4,7 @@ defmodule EWalletService.Users.Create do
   alias EWalletService.Accounts.Account
   alias Ecto.Multi
 
-  @start_balance "1000.00"
+  @start_balance "0.00"
 
   def call(params) do
     try do

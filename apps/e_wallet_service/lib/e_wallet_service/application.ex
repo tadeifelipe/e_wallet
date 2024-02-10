@@ -20,18 +20,24 @@ defmodule EWalletService.Application do
       EWalletServiceWeb.Endpoint
     ]
 
-    if Application.get_env(:e_wallet_service, EWalletServiceWeb.Kafka.Producer)[:enabled]  do
-      children = [ children |
-      %{
-        id: EWalletServiceWeb.Kafka.Producer,
-        start: {EWalletServiceWeb.Kafka.Producer, :start_link, []}
-      }]
-    end
-
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: EWalletService.Supervisor]
-    Supervisor.start_link(children, opts)
+
+    case Application.get_env(:e_wallet_service, EWalletServiceWeb.Kafka.Producer)[:enabled] do
+      true ->
+        Supervisor.start_link(
+          [
+            %{
+              id: EWalletServiceWeb.Kafka.Producer,
+              start: {EWalletServiceWeb.Kafka.Producer, :start_link, []}
+            }
+            | children
+          ],
+          opts
+        )
+
+      false ->
+        Supervisor.start_link(children, opts)
+    end
   end
 
   # Tell Phoenix to update the endpoint configuration

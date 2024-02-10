@@ -22,7 +22,7 @@ defmodule EWalletServiceWeb.Kafka.Producer do
     with :ok <- :brod.start_client(@broker, :kafka_client, allow_topic_auto_creation: true) do
       case :brod.start_producer(:kafka_client, @topic, []) do
         :ok -> Logger.info("Connected to Kafka")
-        {:error, _} -> Logger.error("Could not connect to Kafka")
+        {:error, reason} -> Logger.error("Could not connect to Kafka: #{reason}")
       end
     end
   end
@@ -39,18 +39,28 @@ defmodule EWalletServiceWeb.Kafka.Producer do
         id: message.id
       })
 
-    Logger.info("Sending message to kafka: #{json_message}")
+    Logger.info("Sending message to topic: #{@topic}")
 
-    case :brod.produce_sync(
-           :kafka_client,
-           @topic,
-           :hash,
-           Integer.to_string(message.id),
-           json_message
-         ) do
-      :ok -> {:ok, message}
-      {:error, reason} -> {:error, reason}
-    end
+    :brod.produce_sync(
+      :kafka_client,
+      @topic,
+      :hash,
+      Integer.to_string(message.id),
+      json_message
+    )
+    |> handle_response(message)
+  end
+
+  defp handle_response({:error, reason}, message) do
+    Logger.error("Failed to send message: #{reason}")
+
+    {:error, message}
+  end
+
+  defp handle_response(:ok, message) do
+    Logger.info("Message send successfully")
+
+    {:ok, message}
   end
 
   def topic(), do: @topic

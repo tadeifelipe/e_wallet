@@ -1,0 +1,2 @@
+defmodule EWalletConsumer do
+end
