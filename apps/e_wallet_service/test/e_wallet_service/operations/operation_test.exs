@@ -1,7 +1,7 @@
-defmodule EWalletConsumer.OperationTest do
+defmodule EWalletService.OperationTest do
   use ExUnit.Case
   alias Ecto.Changeset
-  alias EWalletConsumer.Operations.Operation
+  alias EWalletService.Operations.Operation
 
   describe "changeset/1" do
     test "should return a valid changeset" do

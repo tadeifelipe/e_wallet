@@ -1,7 +1,7 @@
-defmodule EWalletConsumer.Operations.Create do
+defmodule EWalletService.Operations.Create do
   require Logger
   alias Ecto.Multi
-  alias EWalletConsumer.Operations.Operation
+  alias EWalletService.Operations.Operation
   alias EWalletService.Repo
   alias EWalletService.Accounts.{Account, Deposit, Transfer}
   alias EWalletService.Payments.Payment

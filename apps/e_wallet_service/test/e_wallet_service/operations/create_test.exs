@@ -1,11 +1,11 @@
-defmodule EWalletConsumer.CreateTest do
+defmodule EWalletService.CreateTest do
   use ExUnit.Case
 
   alias EWalletService.Accounts.{CreateDeposit, CreateTransfer}
   alias EWalletService.Users.Create, as: CreateUser
   alias EWalletService.Payments.Create, as: CreatePayment
-  alias EWalletConsumer.Operations.Create, as: CreateOperation
-  alias EWalletConsumer.Operations.Operation
+  alias EWalletService.Operations.Create, as: CreateOperation
+  alias EWalletService.Operations.Operation
   alias EWalletService.Repo
   alias EWalletService.Accounts.Account
 

@@ -2,7 +2,7 @@ defmodule EWalletConsumer.Kafka.Consumer do
   use Broadway
 
   alias Broadway.Message
-  alias EWalletConsumer.Operations.Create, as: CreateOperation
+  alias EWalletService.Operations.Create, as: CreateOperation
   require Logger
 
   @broker [localhost: 9092]

@@ -1,4 +1,4 @@
-defmodule EWalletConsumer.Operations.Operation do
+defmodule EWalletService.Operations.Operation do
   use Ecto.Schema
 
   import Ecto.Changeset
