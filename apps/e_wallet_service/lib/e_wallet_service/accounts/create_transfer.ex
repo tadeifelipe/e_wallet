@@ -5,6 +5,8 @@ defmodule EWalletService.Accounts.CreateTransfer do
   alias EWalletService.RiskCheck.Client, as: RiskCheckClient
   alias EWalletServiceWeb.Kafka.Publisher, as: KafkaPublisher
 
+  require Logger
+
   def call(user_id, %{"to_account_id" => to_account_id, "value" => value}) do
     with %Account{} = from_account <- Repo.get_by(Account, user_id: user_id),
          %Account{} = to_account <- Repo.get(Account, to_account_id),
@@ -17,6 +19,8 @@ defmodule EWalletService.Accounts.CreateTransfer do
   end
 
   defp make_transfer(from_account, to_account, value) do
+    Logger.info("Making transfer")
+
     with {:ok, _} <- risk_check_client().call() do
       result =
         %{

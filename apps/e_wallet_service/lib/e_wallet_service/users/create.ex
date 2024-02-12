@@ -4,9 +4,13 @@ defmodule EWalletService.Users.Create do
   alias EWalletService.Accounts.Account
   alias Ecto.Multi
 
+  require Logger
+
   @start_balance "0.00"
 
   def call(params) do
+    Logger.info("Creating user")
+
     try do
       Multi.new()
       |> Multi.insert(:create_user, User.changeset(params))

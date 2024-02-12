@@ -5,6 +5,8 @@ defmodule EWalletService.Accounts.CreateDeposit do
   alias EWalletService.RiskCheck.Client, as: RiskCheckClient
   alias EWalletServiceWeb.Kafka.Producer, as: KafkaProducer
 
+  require Logger
+
   def call(user_id, %{"value" => value} = params) do
     with %Account{} = account <- Repo.get_by(Account, user_id: user_id),
          {:ok, _} <- Decimal.cast(value) do
@@ -18,6 +20,8 @@ defmodule EWalletService.Accounts.CreateDeposit do
   defp make_deposit(account, params) do
     with {:ok, _} <- risk_check_client().call() do
       params = Map.put(params, "account_id", account.id)
+
+      Logger.info("Making deposit")
 
       result =
         params

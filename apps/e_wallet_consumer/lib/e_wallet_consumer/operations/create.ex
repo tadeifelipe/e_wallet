@@ -7,6 +7,8 @@ defmodule EWalletConsumer.Operations.Create do
   alias EWalletService.Payments.Payment
 
   def call(%{"operation" => "deposit", "id" => id}) do
+    Logger.info("Creating deposit operation")
+
     deposit = Repo.get(Deposit, id)
 
     with %Account{} = account <- Repo.get(Account, deposit.account_id) do
@@ -30,6 +32,8 @@ defmodule EWalletConsumer.Operations.Create do
   end
 
   def call(%{"operation" => "payment", "id" => id}) do
+    Logger.info("Creating payment operation")
+
     payment = Repo.get(Payment, id)
 
     with %Account{} = account <- Repo.get(Account, payment.account_id) do
@@ -49,6 +53,8 @@ defmodule EWalletConsumer.Operations.Create do
   end
 
   def call(%{"operation" => "transfer", "id" => id}) do
+    Logger.info("Creating transfer operation")
+
     transfer = Repo.get(Transfer, id)
     from_account = Repo.get(Account, transfer.from_account_id)
     to_account = Repo.get(Account, transfer.to_account_id)

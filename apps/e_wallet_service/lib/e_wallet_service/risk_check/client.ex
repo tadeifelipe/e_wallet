@@ -2,12 +2,16 @@ defmodule EWalletService.RiskCheck.Client do
   use Tesla
   alias EWalletService.RiskCheck.ClientBehaviour
 
+  require Logger
+
   @default_url "https://ewallet-risk-check.free.beeceptor.com"
 
   @behaviour ClientBehaviour
 
   @impl ClientBehaviour
   def call(url \\ @default_url) do
+    Logger.info("Checking operation's risk")
+
     url
     |> post("")
     |> handle_response()
