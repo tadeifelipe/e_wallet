@@ -1,3 +1,3 @@
 # EWallet
 
-![](https://github.com/tadeifelipe/e_wallet/actions/workflows/build.yml/badge.svg)
+![](https://github.com/tadeifelipe/e_wallet/actions/workflows/elixir.yaml/badge.svg)
