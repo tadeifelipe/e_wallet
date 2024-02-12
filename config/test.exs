@@ -9,7 +9,7 @@ config :e_wallet_service, EWalletService.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
-  database: "e_wallet_service_test#{System.get_env("MIX_TEST_PARTITION")}",
+  database: "e_wallet_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: System.schedulers_online() * 2
 

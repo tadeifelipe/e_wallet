@@ -1,9 +1,8 @@
 defmodule EWalletConsumer.Kafka.Consumer do
   use Broadway
 
-  alias ElixirLS.LanguageServer.JsonRpc
   alias Broadway.Message
-
+  alias EWalletConsumer.Operations.Create, as: CreateOperation
   require Logger
 
   @broker [localhost: 9092]
@@ -31,14 +30,12 @@ defmodule EWalletConsumer.Kafka.Consumer do
   def handle_message(_, %Message{data: data} = message, _) do
     Logger.info("Got message from topic: #{@topic}")
 
-    case Jason.decode(data) do
-      {:ok, decoded} ->
-        Operation.call(decoded)
-        message
-      {:error, _} = err ->
-        message
-        |> Message.failed(err)
-        |> Message.put_batcher(:errors)
+    operation = Jason.decode!(data)
+
+    with {:ok, _} <- CreateOperation.call(operation) do
+      message
+    else
+      {:error, reason} -> handle_error(reason, message)
     end
   end
 
@@ -46,5 +43,13 @@ defmodule EWalletConsumer.Kafka.Consumer do
   def handle_batch(:errors, messages, _, _) do
     Logger.error("Got #{Enum.count(messages)} in :errors batcher")
     messages
+  end
+
+  defp handle_error(reason, message) do
+    Logger.error("Error on execute operation: #{reason}")
+
+    message
+    |> Message.failed(reason)
+    |> Message.put_batcher(:errors)
   end
 end

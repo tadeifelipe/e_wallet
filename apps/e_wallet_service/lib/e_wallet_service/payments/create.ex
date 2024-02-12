@@ -2,7 +2,8 @@ defmodule EWalletService.Payments.Create do
   alias EWalletService.Repo
   alias EWalletService.Payments.Payment
   alias EWalletService.Accounts.Account
-  alias EWalletServiceWeb.Kafka.Publisher, as: KafkaPublisher
+  alias EWalletServiceWeb.Kafka.Producer, as: KafkaProducer
+  alias EWalletService.RiskCheck.Client, as: RiskCheckClient
 
   def call(user_id, %{"value" => value} = params) do
     with %Account{} = account <- Repo.get_by(Account, user_id: user_id),
@@ -31,7 +32,7 @@ defmodule EWalletService.Payments.Create do
   defp set_status_created(params), do: Map.put(params, "status", "CREATED")
 
   defp publisher_kafka() do
-    Application.get_env(:e_wallet_service, :publisher_kafka, KafkaPublisher)
+    Application.get_env(:e_wallet_service, :publisher_kafka, KafkaProducer)
   end
 
   defp risk_check_client() do

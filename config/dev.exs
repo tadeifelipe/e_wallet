@@ -5,7 +5,7 @@ config :e_wallet_service, EWalletService.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
-  database: "e_wallet_service_dev",
+  database: "e_wallet_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
