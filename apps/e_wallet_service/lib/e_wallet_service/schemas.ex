@@ -294,6 +294,7 @@ defmodule PhoenixAppWeb.Schemas do
         data: Operation
       },
       example: %{
+        balance: "300.00"
         operations: [
           %{
             "type" => "deposit",
