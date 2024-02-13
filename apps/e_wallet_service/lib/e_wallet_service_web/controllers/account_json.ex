@@ -21,4 +21,11 @@ defmodule EWalletServiceWeb.AccountJSON do
       }
     }
   end
+
+  def extract(%{account: account, operations: operations}) do
+    %{
+      balance: account.balance,
+      operations: operations
+    }
+  end
 end

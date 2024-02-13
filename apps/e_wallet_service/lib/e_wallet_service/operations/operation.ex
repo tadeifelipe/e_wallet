@@ -8,6 +8,7 @@ defmodule EWalletService.Operations.Operation do
   @required_fields [:value, :type, :account_id]
   @all_fields [:value, :type, :account_id, :note]
 
+  @derive {Jason.Encoder, only: [:value, :type, :inserted_at]}
   schema "operations" do
     field(:value, :decimal)
     field(:type, :string)

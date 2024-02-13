@@ -128,6 +128,38 @@ defmodule PhoenixAppWeb.Schemas do
     })
   end
 
+  defmodule Operation do
+    OpenApiSpex.schema(%{
+      title: "Operation",
+      description: "An account operation",
+      type: :object,
+      properties: %{
+        id: %Schema{type: :integer, description: "Deposit ID"},
+        type: %Schema{type: :string, description: "transfer"},
+        value: %Schema{type: :string, description: "100.00"},
+        status: %Schema{type: :string, description: "CREATED"},
+        note: %Schema{type: :string, description: "Transfer to account_id: 2"},
+        account_id: %Schema{type: :integer, description: 123},
+        inserted_at: %Schema{
+          type: :string,
+          description: "Creation timestamp",
+          format: :"date-time"
+        },
+        updated_at: %Schema{type: :string, description: "Update timestamp", format: :"date-time"}
+      },
+      required: [:name, :email, :password],
+      example: %{
+        "id" => 123,
+        "type" => "transfer",
+        "status" => "CREATED",
+        "note" => "Transfer to account_id: 2",
+        "value" => "100.00",
+        "inserted_at" => "2017-09-12T12:34:55Z",
+        "updated_at" => "2017-09-13T10:11:12Z"
+      }
+    })
+  end
+
   defmodule UserRequest do
     OpenApiSpex.schema(%{
       title: "UserRequest",
@@ -248,6 +280,32 @@ defmodule PhoenixAppWeb.Schemas do
           "value" => "100.00",
           "status" => "CREATED"
         }
+      },
+      "x-struct": __MODULE__
+    })
+  end
+
+  defmodule ExtractResponse do
+    OpenApiSpex.schema(%{
+      title: "ExtractResponse",
+      description: "Response schema for account operations",
+      type: :object,
+      properties: %{
+        data: Operation
+      },
+      example: %{
+        operations: [
+          %{
+            "type" => "deposit",
+            "value" => "100.00",
+            "date" => "2017-09-12T12:34:55Z",
+          },
+          %{
+            "type" => "payment",
+            "value" => "50.00",
+            "date" => "2017-09-13T12:34:55Z",
+          }
+        ]
       },
       "x-struct": __MODULE__
     })

@@ -51,4 +51,21 @@ defmodule EWalletServiceWeb.AccountController do
       |> render(:transfer, transfer: transfer)
     end
   end
+
+  tags ["extract"]
+  operation :extract,
+    summary: "Extract all operation from users account",
+    responses: [
+      ok: {"Transfer response", "application/json", Schemas.ExtractResponse}
+    ]
+
+  def extract(conn, params) do
+    user_id = conn.assigns[:user_id]
+
+    with {:ok, account, operations} <- EWalletService.extract(user_id, params) do
+      conn
+      |> put_status(:ok)
+      |> render(:extract, account: account, operations: operations)
+    end
+  end
 end

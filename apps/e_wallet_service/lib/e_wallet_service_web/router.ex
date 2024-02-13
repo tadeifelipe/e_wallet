@@ -46,6 +46,7 @@ defmodule EWalletServiceWeb.Router do
 
     post "/accounts/deposit", AccountController, :deposit
     post "/accounts/transfer", AccountController, :transfer
+    get "/accounts/extract", AccountController, :extract
     post "/payments", PaymentController, :create
   end
 
