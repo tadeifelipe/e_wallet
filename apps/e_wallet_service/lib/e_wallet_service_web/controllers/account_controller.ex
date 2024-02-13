@@ -3,8 +3,23 @@ defmodule EWalletServiceWeb.AccountController do
   alias EWalletService.Accounts.Transfer
 
   use EWalletServiceWeb, :controller
+  use OpenApiSpex.ControllerSpecs
+  alias PhoenixAppWeb.Schemas
 
   action_fallback EWalletServiceWeb.FallbackController
+
+
+  tags ["accounts"]
+  operation :deposit,
+    summary: "Deposit a value to account",
+    parameters: [
+      value: [in: :path, description: "Deposits value", type: :string, example: "100.00"],
+      type: [in: :path, description: "Deposits type", type: :string, example: "[bank_deposit, credit_card_deposit]"],
+    ],
+    responses: [
+      ok: {"Deposit response", "application/json", Schemas.DepositResponse}
+    ]
+
 
   def deposit(conn, params) do
     user_id = conn.assigns[:user_id]
@@ -15,6 +30,17 @@ defmodule EWalletServiceWeb.AccountController do
       |> render(:deposit, deposit: deposit)
     end
   end
+
+  tags ["accounts"]
+  operation :transfer,
+    summary: "Transfer a value from an account to another",
+    parameters: [
+      value: [in: :path, description: "Deposits value", type: :string, example: "100.00"],
+      to_account_id: [in: :path, description: "Account number", type: :integer, example: "123"],
+    ],
+    responses: [
+      ok: {"Transfer response", "application/json", Schemas.TransferResponse}
+    ]
 
   def transfer(conn, params) do
     user_id = conn.assigns[:user_id]

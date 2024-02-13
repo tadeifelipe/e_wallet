@@ -66,3 +66,5 @@ config :phoenix, :plug_init_mode, :runtime
 config :swoosh, :api_client, false
 
 config :e_wallet_service, EWalletServiceWeb.Kafka.Producer, enabled: true
+
+config :open_api_spex, :cache_adapter, OpenApiSpex.Plug.NoneCache

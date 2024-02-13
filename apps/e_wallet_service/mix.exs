@@ -52,6 +52,7 @@ defmodule EWalletService.MixProject do
       {:tesla, "~> 1.4"},
       {:hackney, "~> 1.17"},
       {:brod, "~> 3.17.0"},
+      {:open_api_spex, "~> 3.18"},
       {:bypass, "~> 2.1", only: :test},
       {:mox, "~> 1.0", only: :test},
       {:testcontainers, "~> 1.6"}
