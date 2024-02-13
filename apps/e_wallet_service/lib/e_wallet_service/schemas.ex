@@ -88,7 +88,6 @@ defmodule PhoenixAppWeb.Schemas do
         "id" => 123,
         "status" => "CREATED",
         "note" => "test note",
-        "to_account_id" => "321",
         "value" => "100.00",
         "from_account_id" => "123",
         "to_account_id" => "321",
@@ -294,7 +293,7 @@ defmodule PhoenixAppWeb.Schemas do
         data: Operation
       },
       example: %{
-        balance: "300.00"
+        balance: "300.00",
         operations: [
           %{
             "type" => "deposit",
