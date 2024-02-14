@@ -12,12 +12,18 @@ defmodule EWalletServiceWeb.UserController do
   action_fallback EWalletServiceWeb.FallbackController
 
   tags ["users"]
+
   operation :create,
     summary: "Create user",
     parameters: [
       name: [in: :path, description: "Users name", type: :string, example: "Joe"],
       email: [in: :path, description: "Users email", type: :string, example: "joe@email.com"],
-      password: [in: :path, description: "Users password", type: :string, example: "password123556"]
+      password: [
+        in: :path,
+        description: "Users password",
+        type: :string,
+        example: "password123556"
+      ]
     ],
     responses: [
       ok: {"User response", "application/json", Schemas.UserResponse}
@@ -32,11 +38,17 @@ defmodule EWalletServiceWeb.UserController do
   end
 
   tags ["users"]
+
   operation :sign_in,
     summary: "Signin",
     parameters: [
       email: [in: :path, description: "Users email", type: :string, example: "joe@email.com"],
-      password: [in: :path, description: "Users password", type: :string, example: "password123556"]
+      password: [
+        in: :path,
+        description: "Users password",
+        type: :string,
+        example: "password123556"
+      ]
     ],
     request_body: {"User params", "application/json"},
     responses: [

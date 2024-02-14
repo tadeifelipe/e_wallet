@@ -169,9 +169,9 @@ defmodule PhoenixAppWeb.Schemas do
       },
       required: [:user],
       example: %{
-          "name" => "Joe User",
-          "email" => "joe@gmail.com",
-          "password" => "password123456"
+        "name" => "Joe User",
+        "email" => "joe@gmail.com",
+        "password" => "password123456"
       }
     })
   end
@@ -206,7 +206,7 @@ defmodule PhoenixAppWeb.Schemas do
       },
       example: %{
         "message" => "User created",
-          user: %{
+        user: %{
           "id" => 123,
           "name" => "Joe User",
           "email" => "joe@gmail.com",
@@ -230,7 +230,7 @@ defmodule PhoenixAppWeb.Schemas do
       },
       example: %{
         "message" => "User created",
-          user: %{
+        user: %{
           "id" => 123,
           "name" => "Joe User",
           "email" => "joe@gmail.com",
@@ -298,12 +298,12 @@ defmodule PhoenixAppWeb.Schemas do
           %{
             "type" => "deposit",
             "value" => "100.00",
-            "date" => "2017-09-12T12:34:55Z",
+            "date" => "2017-09-12T12:34:55Z"
           },
           %{
             "type" => "payment",
             "value" => "50.00",
-            "date" => "2017-09-13T12:34:55Z",
+            "date" => "2017-09-13T12:34:55Z"
           }
         ]
       },

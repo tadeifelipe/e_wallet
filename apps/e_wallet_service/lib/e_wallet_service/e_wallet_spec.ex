@@ -11,8 +11,8 @@ defmodule EWalletService.EWalletSpec do
         Server.from_endpoint(Endpoint)
       ],
       info: %Info{
-      title: "E-Wallet Service",
-      version: "1.0"
+        title: "E-Wallet Service",
+        version: "1.0"
       },
       # Populate the paths from a phoenix router
       paths: Paths.from_router(Router),
@@ -21,6 +21,7 @@ defmodule EWalletService.EWalletSpec do
       },
       security: [%{"authorization" => []}]
     }
-    |> OpenApiSpex.resolve_schema_modules() # Discover request/response schemas from path specs
+    # Discover request/response schemas from path specs
+    |> OpenApiSpex.resolve_schema_modules()
   end
 end

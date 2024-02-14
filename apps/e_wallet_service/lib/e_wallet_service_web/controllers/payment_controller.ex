@@ -8,10 +8,11 @@ defmodule EWalletServiceWeb.PaymentController do
   action_fallback EWalletServiceWeb.FallbackController
 
   tags ["payments"]
+
   operation :create,
     summary: "Payment a value",
     parameters: [
-      value: [in: :path, description: "Payment value", type: :string, example: "100.00"],
+      value: [in: :path, description: "Payment value", type: :string, example: "100.00"]
     ],
     responses: [
       ok: {"Payment response", "application/json", Schemas.PaymentResponse}
