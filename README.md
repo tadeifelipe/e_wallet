@@ -49,7 +49,7 @@ The were add docker images in `docker-compose.yml` to simulate the database and 
 Prerequisite technologies
 + [Elixir](https://elixir-lang.org/)
 + [Docker](https://www.docker.com/products/docker-hub/)
-+ [Docker-compose][https://docs.docker.com/compose/]
++ [Docker-compose](https://docs.docker.com/compose/)
 
 
 ### - Docker
@@ -133,7 +133,7 @@ The app uses Basic Authentication, e by default, gets the user and password via:
 ### - Deposit
 ```
  curl -X POST \
- http://localhost:4000/api/v1/deposit \
+ http://localhost:4000/api/v1/accounts/deposit \
  -H 'Content-Type: application/json' \
  -H 'Authorization: Bearer JWT-TOKEN-HERE' \
  -H 'cache-control: no-cache' \
@@ -179,7 +179,7 @@ The app uses Basic Authentication, e by default, gets the user and password via:
 ### - Transfer
 ```
  curl -X POST \
- http://localhost:4000/api/v1/transfer \
+ http://localhost:4000/api/v1/accounts/transfer \
  -H 'Content-Type: application/json' \
  -H 'Authorization: Bearer JWT-TOKEN-HERE' \
  -H 'cache-control: no-cache' \
@@ -200,3 +200,44 @@ The app uses Basic Authentication, e by default, gets the user and password via:
     }
 }
 ```
+
+### - Extract
+```
+ curl -X GET \
+ http://localhost:4000/api/v1/accounts/extract \
+ -H 'Content-Type: application/json' \
+ -H 'Authorization: Bearer JWT-TOKEN-HERE' \
+ -H 'cache-control: no-cache' \
+```
+#### response
+```
+{
+	"balance": "300.00",
+	"operations": [
+		{
+			"value": "80.00",
+			"type": "payment",
+			"inserted_at": "2024-02-13T14:13:23"
+		},
+		{
+			"value": "50.00",
+			"type": "deposit",
+			"inserted_at": "2024-02-13T14:09:24"
+		},
+		{
+			"value": "110.00",
+			"type": "deposit",
+			"inserted_at": "2024-02-13T14:07:06"
+		}
+	]
+}
+```
+
+# Technologies
++ **pbkdf2_elixir** for password hashes
++ **tesla** for client HTTP
++ **brod** and **broadway_kafka** for client Kafka
++ **mox** for lib mock services
++ **bypass** stub services http for integration tests
++ **testcontainers** lib for simulate kafka container in integration tests
++ **open_api_spex** for app specification and swagger-ui
