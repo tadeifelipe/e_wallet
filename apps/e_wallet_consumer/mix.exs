@@ -11,7 +11,8 @@ defmodule EWalletConsumer.MixProject do
       lockfile: "../../mix.lock",
       elixir: "~> 1.16-rc",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls]
     ]
   end
 

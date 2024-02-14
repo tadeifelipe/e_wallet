@@ -1,0 +1,14 @@
+{
+  "custom_stop_words": [
+
+  ],
+
+  "coverage_options": {
+    "output_dir": "cover/",
+    "minimum_coverage": 75
+  },
+
+  "skip_files": [
+    "lib/e_wallet_service/schemas.ex"
+  ]
+}
