@@ -3,6 +3,8 @@
 ![](https://github.com/tadeifelipe/e_wallet/actions/workflows/elixir.yaml/badge.svg)
 
 API to manage a digital wallet
+
+
 Bellow is the System Design
 [System design](https://excalidraw.com/#json=WMk2XMzZQmOG9JqKe4Y3p,_9yPBSvyxUj3UW_tiFT4Qg)
 
@@ -15,6 +17,7 @@ Using **PostgreSQL** for data persistence and **Kafka** to send messages between
 The app uses a Umbrella project focusing in scalability and low coupling, enabling separate builds
 
 The first app uses a Phoenix REST API offering an API and sending messages to a topic kafka
+
 The second one handle with this messages and execute the specific operations solicited, changing the balance account
 
 ```
