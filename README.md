@@ -3,6 +3,8 @@
 ![](https://github.com/tadeifelipe/e_wallet/actions/workflows/elixir.yaml/badge.svg)
 
 API to manage a digital wallet
+Bellow is the System Design
+[System design](https://excalidraw.com/#json=WMk2XMzZQmOG9JqKe4Y3p,_9yPBSvyxUj3UW_tiFT4Qg)
 
 # Application Architecture
 
@@ -241,3 +243,4 @@ The app uses Basic Authentication, e by default, gets the user and password via:
 + **bypass** stub services http for integration tests
 + **testcontainers** lib for simulate kafka container in integration tests
 + **open_api_spex** for app specification and swagger-ui
++ **excoveralls** for coverage test

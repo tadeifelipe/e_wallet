@@ -72,6 +72,7 @@ jobs:
     - name: Check Formatting
       run: mix format --check-formatted
 
-    # Step: Execute the tests.
     - name: Run tests
-      run: mix test
+      run: mix coveralls.github
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

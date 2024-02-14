@@ -16,6 +16,6 @@ defmodule EWallet.MixProject do
   #
   # Run "mix help deps" for examples and options.
   defp deps do
-    []
+    [{:excoveralls, "~> 0.18", only: :test}]
   end
 end
