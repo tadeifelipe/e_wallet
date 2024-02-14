@@ -1,6 +1,6 @@
 # EWallet
 
-![](https://github.com/tadeifelipe/e_wallet/actions/workflows/elixir.yaml/badge.svg)
+![](https://github.com/tadeifelipe/e_wallet/actions/workflows/elixir.yaml/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/tadeifelipe/e_wallet/badge.svg?branch=main)](https://coveralls.io/github/tadeifelipe/e_wallet?branch=main)
 
 API to manage a digital wallet
 
